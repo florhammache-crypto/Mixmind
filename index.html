@@ -32,9 +32,6 @@
         margin-bottom: 15px;
         border-left: 4px solid #00ffff;
       }
-      .chat-bubble.user {
-        border-left-color: #00ff99;
-      }
       .chat-bubble.system {
         border-left-color: #00ffff;
       }
@@ -86,6 +83,14 @@
       <button onclick="vraagGenre()">🎶 Genre-advies</button>
       <button onclick="vraagPlatform()">🔌 Platform-advies</button>
       <button onclick="zoekPlatformTracks()">🎵 Zoek muziek op Spotify, SoundCloud of Beatport</button>
+
+      <div class="chat-bubble system">
+        🔗 Wil je een playlist maken? Log in met Spotify:
+      </div>
+
+      <a href="https://accounts.spotify.com/authorize?client_id=JOUW_CLIENT_ID&response_type=token&redirect_uri=https://mixmind.vercel.app/callback&scope=playlist-modify-public playlist-modify-private">
+        <button>🔐 Log in met Spotify</button>
+      </a>
 
       <div class="chat-bubble system">
         🔍 Of typ een vibe, genre of doelgroep hieronder:
@@ -195,12 +200,4 @@
         }
 
         document.getElementById("resultaat").innerHTML = `
-          <div class="chat-bubble system">
-            🎵 MixMind zoekt <strong>${genre}</strong> op ${platform}:<br>
-            <a href="${link}" target="_blank">${link}</a>
-          </div>
-        `;
-      }
-    </script>
-  </body>
-</html>
+          <div
