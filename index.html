@@ -69,13 +69,105 @@
     <footer>© 2025 MixMind – Gebouwd voor DJ's door flor</footer>
 
     <script>
-      function slimmeZoek() {
-        const invoer = document.getElementById("zoekveld").value.toLowerCase();
-        const resultaat = document.getElementById("resultaat");
-        if (invoer.trim() === "") {
-          resultaat.innerText = "Typ eerst iets in!";
-          return;
-        }
+  function slimmeZoek() {
+    const invoer = document.getElementById("zoekveld").value.toLowerCase();
+    const resultaat = document.getElementById("resultaat");
+    if (invoer.trim() === "") {
+      resultaat.innerText = "Typ eerst iets in!";
+      return;
+    }
+
+    let platform = "automatisch gekozen platform";
+    let link = "";
+
+    if (invoer.includes("spotify")) {
+      platform = "Spotify";
+      link = `https://open.spotify.com/search/${encodeURIComponent(invoer)}`;
+    } else if (invoer.includes("soundcloud")) {
+      platform = "SoundCloud";
+      link = `https://soundcloud.com/search?q=${encodeURIComponent(invoer)}`;
+    } else if (invoer.includes("beatport") || invoer.includes("techno") || invoer.includes("house")) {
+      platform = "Beatport";
+      link = `https://www.beatport.com/search?q=${encodeURIComponent(invoer)}`;
+    } else {
+      platform = "Spotify";
+      link = `https://open.spotify.com/search/${encodeURIComponent(invoer)}`;
+    }
+
+    resultaat.innerHTML = `🎶 MixMind zoekt "<strong>${invoer}</strong>" op ${platform}:<br><a href="${link}" target="_blank">${link}</a>`;
+  }
+
+  function startAdvies() {
+    const doelgroep = prompt("Voor wie draai je? (bv. jongeren 15–19 jaar)");
+    const duur = prompt("Hoe lang duurt je set? (in uren)");
+
+    if (!doelgroep || !duur || isNaN(duur)) {
+      alert("Geef een geldige doelgroep en tijdsduur op.");
+      return;
+    }
+
+    const tracksPerUur = doelgroep.includes("jongeren") ? 35 : 25;
+    const totaalTracks = Math.round(tracksPerUur * parseFloat(duur));
+    const genre = doelgroep.includes("jongeren") ? "EDM, hip-hop, pop punk" : "deep house, chill techno";
+    const platform = doelgroep.includes("jongeren") ? "Spotify of SoundCloud" : "Beatport of SoundCloud";
+
+    document.getElementById("resultaat").innerHTML = `
+      🎛️ MixMind Advies:<br>
+      Doelgroep: ${doelgroep}<br>
+      Duur: ${duur} uur<br>
+      🎶 Genre-advies: ${genre}<br>
+      🔌 Platform: ${platform}<br>
+      ⏱️ Tracks nodig: ± ${totaalTracks}
+    `;
+  }
+
+  function vraagAantalTracks() {
+    const uren = prompt("Hoe lang duurt je set? (in uren)");
+    if (!uren || isNaN(uren)) return alert("Geef een geldig getal op.");
+    const tracks = Math.round(parseFloat(uren) * 30);
+    document.getElementById("resultaat").innerText = `⏱️ Voor ${uren} uur heb je ongeveer ${tracks} tracks nodig.`;
+  }
+
+  function vraagGenre() {
+    const publiek = prompt("Voor welk publiek draai je? (bv. jongeren, volwassenen)");
+    const genre = publiek.includes("jongeren") ? "EDM, hip-hop, TikTok-hits" : "deep house, chill techno";
+    document.getElementById("resultaat").innerText = `🎶 Voor ${publiek} stel ik voor: ${genre}`;
+  }
+
+  function vraagPlatform() {
+    const stijl = prompt("Welke stijl wil je draaien? (bv. techno, pop, afrobeat)");
+    let platform = "Spotify";
+    if (stijl.includes("techno") || stijl.includes("house")) platform = "Beatport of SoundCloud";
+    else if (stijl.includes("remix") || stijl.includes("underground")) platform = "SoundCloud";
+    document.getElementById("resultaat").innerText = `🔌 Voor ${stijl} raad ik aan: ${platform}`;
+  }
+
+  function zoekPlatformTracks() {
+    const stijl = prompt("Welke stijl of genre wil je zoeken? (bv. techno, afrobeat, pop)");
+    if (!stijl || stijl.trim() === "") {
+      alert("Typ een genre of stijl in.");
+      return;
+    }
+
+    const genre = stijl.toLowerCase();
+    let platform = "Spotify";
+    let link = `https://open.spotify.com/search/${encodeURIComponent(genre)}`;
+
+    if (genre.includes("techno") || genre.includes("house") || genre.includes("club")) {
+      platform = "Beatport";
+      link = `https://www.beatport.com/search?q=${encodeURIComponent(genre)}`;
+    } else if (genre.includes("remix") || genre.includes("underground") || genre.includes("dj-set")) {
+      platform = "SoundCloud";
+      link = `https://soundcloud.com/search?q=${encodeURIComponent(genre)}`;
+    }
+
+    document.getElementById("resultaat").innerHTML = `
+      🎵 MixMind zoekt <strong>${genre}</strong> op ${platform}:<br>
+      <a href="${link}" target="_blank">${link}</a>
+    `;
+  }
+</script>
+
 
         let platform = "automatisch gekozen platform";
         if (invoer.includes("spotify")) {
