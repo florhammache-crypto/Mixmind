@@ -20,20 +20,52 @@
       font-size: 20px;
       margin-bottom: 40px;
     }
-    a.button {
+    input[type="text"] {
+      padding: 12px;
+      width: 300px;
+      border-radius: 6px;
+      border: none;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 12px 24px;
       background-color: #00ffff;
       color: black;
-      padding: 15px 30px;
-      border-radius: 8px;
-      text-decoration: none;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
       font-weight: bold;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 40px;
       font-size: 18px;
+      color: #00ff99;
     }
   </style>
 </head>
 <body>
   <h1>🎧 MixMind</h1>
   <p>Ontdek de perfecte mix met AI – speciaal voor DJ’s</p>
-  <a href="#" class="button">Start Nu</a>
+
+  <input type="text" id="zoekveld" placeholder="Typ een genre, vibe of artiest..." />
+  <br />
+  <button onclick="zoekMuziek()">Zoek muziek</button>
+
+  <div class="result" id="resultaat"></div>
+
+  <script>
+    function zoekMuziek() {
+      const invoer = document.getElementById("zoekveld").value;
+      const resultaat = document.getElementById("resultaat");
+
+      if (invoer.trim() === "") {
+        resultaat.innerText = "Typ eerst iets in!";
+      } else {
+        resultaat.innerText = `🎶 Suggesties voor "${invoer}" worden geladen... (AI komt hier later)`;
+      }
+    }
+  </script>
 </body>
 </html>
