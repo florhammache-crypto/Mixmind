@@ -4,34 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MixMind – AI voor DJ's</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #0d0d0d;
-      color: white;
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      padding: 60px;
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+      color: #fff;
     }
-    h1 {
-      font-size: 48px;
+    header {
+      background-color: #00ffff;
+      color: #000;
+      padding: 20px;
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #111;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #00ffff33;
+    }
+    h2 {
       color: #00ffff;
+      font-size: 28px;
+      margin-bottom: 10px;
     }
     p {
-      font-size: 20px;
-      margin-bottom: 40px;
+      font-size: 18px;
+      line-height: 1.6;
     }
     input[type="text"] {
+      width: 100%;
       padding: 12px;
-      width: 300px;
+      font-size: 16px;
       border-radius: 6px;
       border: none;
-      font-size: 16px;
+      margin-top: 10px;
       margin-bottom: 20px;
     }
     button {
       padding: 12px 24px;
       background-color: #00ffff;
-      color: black;
+      color: #000;
       border: none;
       border-radius: 6px;
       font-size: 16px;
@@ -39,32 +57,64 @@
       cursor: pointer;
     }
     .result {
-      margin-top: 40px;
+      margin-top: 30px;
       font-size: 18px;
       color: #00ff99;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #888;
     }
   </style>
 </head>
 <body>
-  <h1>🎧 MixMind</h1>
-  <p>Ontdek de perfecte mix met AI – speciaal voor DJ’s</p>
+  <header>🎧 MixMind – AI voor DJ's</header>
 
-  <input type="text" id="zoekveld" placeholder="Typ een genre, vibe of artiest..." />
-  <br />
-  <button onclick="zoekMuziek()">Zoek muziek</button>
+  <div class="container">
+    <h2>🔍 Slimme Muziekzoeker</h2>
+    <p>Typ een vibe, genre, doelgroep of platform. MixMind kiest automatisch het beste muziekplatform en geeft suggesties.</p>
+    <input type="text" id="zoekveld" placeholder="Bijv. 'techno voor jongeren in café'" />
+    <button onclick="slimmeZoek()">Zoek muziek</button>
+    <div class="result" id="resultaat"></div>
+  </div>
 
-  <div class="result" id="resultaat"></div>
+  <footer>© 2025 MixMind – Gebouwd voor DJ's door flor</footer>
 
   <script>
-    function zoekMuziek() {
-      const invoer = document.getElementById("zoekveld").value;
+    function slimmeZoek() {
+      const invoer = document.getElementById("zoekveld").value.toLowerCase();
       const resultaat = document.getElementById("resultaat");
 
       if (invoer.trim() === "") {
         resultaat.innerText = "Typ eerst iets in!";
-      } else {
-        resultaat.innerText = `🎶 Suggesties voor "${invoer}" worden geladen... (AI komt hier later)`;
+        return;
       }
+
+      let platform = "automatisch gekozen platform";
+
+      if (invoer.includes("spotify")) {
+        platform = "Spotify";
+      } else if (invoer.includes("soundcloud")) {
+        platform = "SoundCloud";
+      } else if (invoer.includes("youtube")) {
+        platform = "YouTube";
+      } else if (invoer.includes("beatport")) {
+        platform = "Beatport";
+      } else {
+        if (invoer.includes("underground") || invoer.includes("remix") || invoer.includes("dj-set")) {
+          platform = "SoundCloud";
+        } else if (invoer.includes("top") || invoer.includes("chart") || invoer.includes("populair")) {
+          platform = "Spotify";
+        } else if (invoer.includes("techno") || invoer.includes("house") || invoer.includes("club")) {
+          platform = "Beatport";
+        } else {
+          platform = "Spotify";
+        }
+      }
+
+      resultaat.innerText = `🎶 MixMind zoekt "${invoer}" op ${platform}... (AI komt hier later)`;
     }
   </script>
 </body>
