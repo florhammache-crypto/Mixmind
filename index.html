@@ -69,11 +69,16 @@
 <body>
   <header>🎧 MixMind – AI voor DJ's</header>
   <div class="container">
-    <div class="chat-bubble">👋 Welkom bij MixMind! Kies een AI-optie:</div>
-    <button onclick="maakPlaylist()">🎧 Maak mijn playlist</button>
+    <div class="chat-bubble">👋 Welkom bij MixMind! Log eerst in met Spotify:</div>
+
+    <!-- Spotify login -->
     <a href="https://accounts.spotify.com/authorize?client_id=6437dfc0d9314f0c8cff6ff8f68df9df&response_type=token&redirect_uri=https://mixmind.vercel.app/callback&scope=playlist-modify-public playlist-modify-private">
       <button>🔐 Log in met Spotify</button>
     </a>
+
+    <!-- Playlist maken -->
+    <button onclick="maakPlaylist()">🎧 Maak mijn playlist</button>
+
     <div id="resultaat"></div>
   </div>
   <footer>© 2025 MixMind – Gebouwd door flor</footer>
@@ -89,12 +94,14 @@
       const genre = prompt("Welk genre wil je in je playlist?");
       if (!genre) return;
 
+      // Haal gebruikers-ID op
       const userRes = await fetch("https://api.spotify.com/v1/me", {
         headers: { Authorization: `Bearer ${token}` }
       });
       const userData = await userRes.json();
       const userId = userData.id;
 
+      // Maak playlist
       const playlistRes = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
         method: "POST",
         headers: {
