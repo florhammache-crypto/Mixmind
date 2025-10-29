@@ -7,10 +7,36 @@
     <style>
       body {
         font-family: 'Orbitron', sans-serif;
-        background-color: #000;
+        background-color: #0d0d0d;
         color: #fff;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: #111;
         padding: 20px;
-        line-height: 1.6;
+        text-align: center;
+        font-size: 24px;
+        color: #00ffff;
+        border-bottom: 1px solid #222;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .chat-bubble {
+        background-color: #1a1a1a;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-left: 4px solid #00ffff;
+      }
+      .chat-bubble.user {
+        border-left-color: #00ff99;
+      }
+      .chat-bubble.system {
+        border-left-color: #00ffff;
       }
       input[type="text"] {
         width: 100%;
@@ -20,29 +46,29 @@
         border: none;
         margin-top: 10px;
         margin-bottom: 20px;
+        background-color: #222;
+        color: #fff;
       }
       button {
-        padding: 12px 24px;
+        padding: 12px 20px;
         background-color: #00ffff;
         color: #000;
         border: none;
         border-radius: 6px;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: bold;
         cursor: pointer;
-        margin-right: 10px;
-        margin-bottom: 10px;
+        margin: 5px;
       }
-      .result {
-        margin-top: 30px;
-        font-size: 18px;
-        color: #00ff99;
+      button:hover {
+        background-color: #00ff99;
       }
       footer {
         text-align: center;
         padding: 20px;
         font-size: 14px;
-        color: #888;
+        color: #666;
+        border-top: 1px solid #222;
       }
     </style>
   </head>
@@ -51,146 +77,55 @@
     <header>🎧 MixMind – AI voor DJ's</header>
 
     <div class="container">
-      <h2>🧠 AI-opties</h2>
-      <button onclick="startAdvies()">🎛️ Start volledige AI-advies</button>
-      <button onclick="vraagAantalTracks()">⏱️ Hoeveel tracks heb ik nodig?</button>
-      <button onclick="vraagGenre()">🎶 Wat is een goed genre?</button>
-      <button onclick="vraagPlatform()">🔌 Welk platform past bij mijn stijl?</button>
+      <div class="chat-bubble system">
+        👋 Welkom bij MixMind! Kies een AI-optie om te starten:
+      </div>
+
+      <button onclick="startAdvies()">🎛️ Volledig AI-advies</button>
+      <button onclick="vraagAantalTracks()">⏱️ Tracks berekenen</button>
+      <button onclick="vraagGenre()">🎶 Genre-advies</button>
+      <button onclick="vraagPlatform()">🔌 Platform-advies</button>
       <button onclick="zoekPlatformTracks()">🎵 Zoek muziek op Spotify, SoundCloud of Beatport</button>
 
-      <h2>🔍 Slimme Muziekzoeker</h2>
-      <p>Typ een vibe, genre, doelgroep of platform. MixMind kiest automatisch het beste muziekplatform en geeft suggesties.</p>
+      <div class="chat-bubble system">
+        🔍 Of typ een vibe, genre of doelgroep hieronder:
+      </div>
+
       <input type="text" id="zoekveld" placeholder="Bijv. 'techno voor jongeren in café'" />
       <button onclick="slimmeZoek()">Zoek muziek</button>
 
-      <div class="result" id="resultaat"></div>
+      <div id="resultaat"></div>
     </div>
 
-    <footer>© 2025 MixMind – Gebouwd voor DJ's door flor</footer>
+    <footer>© 2025 MixMind – Gebouwd door flor</footer>
 
     <script>
-  function slimmeZoek() {
-    const invoer = document.getElementById("zoekveld").value.toLowerCase();
-    const resultaat = document.getElementById("resultaat");
-    if (invoer.trim() === "") {
-      resultaat.innerText = "Typ eerst iets in!";
-      return;
-    }
-
-    let platform = "automatisch gekozen platform";
-    let link = "";
-
-    if (invoer.includes("spotify")) {
-      platform = "Spotify";
-      link = `https://open.spotify.com/search/${encodeURIComponent(invoer)}`;
-    } else if (invoer.includes("soundcloud")) {
-      platform = "SoundCloud";
-      link = `https://soundcloud.com/search?q=${encodeURIComponent(invoer)}`;
-    } else if (invoer.includes("beatport") || invoer.includes("techno") || invoer.includes("house")) {
-      platform = "Beatport";
-      link = `https://www.beatport.com/search?q=${encodeURIComponent(invoer)}`;
-    } else {
-      platform = "Spotify";
-      link = `https://open.spotify.com/search/${encodeURIComponent(invoer)}`;
-    }
-
-    resultaat.innerHTML = `🎶 MixMind zoekt "<strong>${invoer}</strong>" op ${platform}:<br><a href="${link}" target="_blank">${link}</a>`;
-  }
-
-  function startAdvies() {
-    const doelgroep = prompt("Voor wie draai je? (bv. jongeren 15–19 jaar)");
-    const duur = prompt("Hoe lang duurt je set? (in uren)");
-
-    if (!doelgroep || !duur || isNaN(duur)) {
-      alert("Geef een geldige doelgroep en tijdsduur op.");
-      return;
-    }
-
-    const tracksPerUur = doelgroep.includes("jongeren") ? 35 : 25;
-    const totaalTracks = Math.round(tracksPerUur * parseFloat(duur));
-    const genre = doelgroep.includes("jongeren") ? "EDM, hip-hop, pop punk" : "deep house, chill techno";
-    const platform = doelgroep.includes("jongeren") ? "Spotify of SoundCloud" : "Beatport of SoundCloud";
-
-    document.getElementById("resultaat").innerHTML = `
-      🎛️ MixMind Advies:<br>
-      Doelgroep: ${doelgroep}<br>
-      Duur: ${duur} uur<br>
-      🎶 Genre-advies: ${genre}<br>
-      🔌 Platform: ${platform}<br>
-      ⏱️ Tracks nodig: ± ${totaalTracks}
-    `;
-  }
-
-  function vraagAantalTracks() {
-    const uren = prompt("Hoe lang duurt je set? (in uren)");
-    if (!uren || isNaN(uren)) return alert("Geef een geldig getal op.");
-    const tracks = Math.round(parseFloat(uren) * 30);
-    document.getElementById("resultaat").innerText = `⏱️ Voor ${uren} uur heb je ongeveer ${tracks} tracks nodig.`;
-  }
-
-  function vraagGenre() {
-    const publiek = prompt("Voor welk publiek draai je? (bv. jongeren, volwassenen)");
-    const genre = publiek.includes("jongeren") ? "EDM, hip-hop, TikTok-hits" : "deep house, chill techno";
-    document.getElementById("resultaat").innerText = `🎶 Voor ${publiek} stel ik voor: ${genre}`;
-  }
-
-  function vraagPlatform() {
-    const stijl = prompt("Welke stijl wil je draaien? (bv. techno, pop, afrobeat)");
-    let platform = "Spotify";
-    if (stijl.includes("techno") || stijl.includes("house")) platform = "Beatport of SoundCloud";
-    else if (stijl.includes("remix") || stijl.includes("underground")) platform = "SoundCloud";
-    document.getElementById("resultaat").innerText = `🔌 Voor ${stijl} raad ik aan: ${platform}`;
-  }
-
-  function zoekPlatformTracks() {
-    const stijl = prompt("Welke stijl of genre wil je zoeken? (bv. techno, afrobeat, pop)");
-    if (!stijl || stijl.trim() === "") {
-      alert("Typ een genre of stijl in.");
-      return;
-    }
-
-    const genre = stijl.toLowerCase();
-    let platform = "Spotify";
-    let link = `https://open.spotify.com/search/${encodeURIComponent(genre)}`;
-
-    if (genre.includes("techno") || genre.includes("house") || genre.includes("club")) {
-      platform = "Beatport";
-      link = `https://www.beatport.com/search?q=${encodeURIComponent(genre)}`;
-    } else if (genre.includes("remix") || genre.includes("underground") || genre.includes("dj-set")) {
-      platform = "SoundCloud";
-      link = `https://soundcloud.com/search?q=${encodeURIComponent(genre)}`;
-    }
-
-    document.getElementById("resultaat").innerHTML = `
-      🎵 MixMind zoekt <strong>${genre}</strong> op ${platform}:<br>
-      <a href="${link}" target="_blank">${link}</a>
-    `;
-  }
-</script>
-
-
-        let platform = "automatisch gekozen platform";
-        if (invoer.includes("spotify")) {
-          platform = "Spotify";
-        } else if (invoer.includes("soundcloud")) {
-          platform = "SoundCloud";
-        } else if (invoer.includes("youtube")) {
-          platform = "YouTube";
-        } else if (invoer.includes("beatport")) {
-          platform = "Beatport";
-        } else {
-          if (invoer.includes("underground") || invoer.includes("remix") || invoer.includes("dj-set")) {
-            platform = "SoundCloud";
-          } else if (invoer.includes("top") || invoer.includes("chart") || invoer.includes("populair")) {
-            platform = "Spotify";
-          } else if (invoer.includes("techno") || invoer.includes("house") || invoer.includes("club")) {
-            platform = "Beatport";
-          } else {
-            platform = "Spotify";
-          }
+      function slimmeZoek() {
+        const invoer = document.getElementById("zoekveld").value.toLowerCase();
+        const resultaat = document.getElementById("resultaat");
+        if (invoer.trim() === "") {
+          resultaat.innerHTML = `<div class="chat-bubble system">⚠️ Typ eerst iets in!</div>`;
+          return;
         }
 
-        resultaat.innerText = `🎶 MixMind zoekt "${invoer}" op ${platform} ... (AI komt hier later)`;
+        let platform = "automatisch gekozen platform";
+        let link = "";
+
+        if (invoer.includes("spotify")) {
+          platform = "Spotify";
+          link = `https://open.spotify.com/search/${encodeURIComponent(invoer)}`;
+        } else if (invoer.includes("soundcloud")) {
+          platform = "SoundCloud";
+          link = `https://soundcloud.com/search?q=${encodeURIComponent(invoer)}`;
+        } else if (invoer.includes("beatport") || invoer.includes("techno") || invoer.includes("house")) {
+          platform = "Beatport";
+          link = `https://www.beatport.com/search?q=${encodeURIComponent(invoer)}`;
+        } else {
+          platform = "Spotify";
+          link = `https://open.spotify.com/search/${encodeURIComponent(invoer)}`;
+        }
+
+        resultaat.innerHTML = `<div class="chat-bubble system">🎶 MixMind zoekt "<strong>${invoer}</strong>" op ${platform}:<br><a href="${link}" target="_blank">${link}</a></div>`;
       }
 
       function startAdvies() {
@@ -208,12 +143,14 @@
         const platform = doelgroep.includes("jongeren") ? "Spotify of SoundCloud" : "Beatport of SoundCloud";
 
         document.getElementById("resultaat").innerHTML = `
-          🎛️ MixMind Advies:<br>
-          Doelgroep: ${doelgroep}<br>
-          Duur: ${duur} uur<br>
-          🎶 Genre-advies: ${genre}<br>
-          🔌 Platform: ${platform}<br>
-          ⏱️ Tracks nodig: ± ${totaalTracks}
+          <div class="chat-bubble system">
+            🎛️ MixMind Advies:<br>
+            Doelgroep: ${doelgroep}<br>
+            Duur: ${duur} uur<br>
+            🎶 Genre: ${genre}<br>
+            🔌 Platform: ${platform}<br>
+            ⏱️ Tracks nodig: ± ${totaalTracks}
+          </div>
         `;
       }
 
@@ -221,13 +158,13 @@
         const uren = prompt("Hoe lang duurt je set? (in uren)");
         if (!uren || isNaN(uren)) return alert("Geef een geldig getal op.");
         const tracks = Math.round(parseFloat(uren) * 30);
-        document.getElementById("resultaat").innerText = `⏱️ Voor ${uren} uur heb je ongeveer ${tracks} tracks nodig.`;
+        document.getElementById("resultaat").innerHTML = `<div class="chat-bubble system">⏱️ Voor ${uren} uur heb je ongeveer ${tracks} tracks nodig.</div>`;
       }
 
       function vraagGenre() {
         const publiek = prompt("Voor welk publiek draai je? (bv. jongeren, volwassenen)");
         const genre = publiek.includes("jongeren") ? "EDM, hip-hop, TikTok-hits" : "deep house, chill techno";
-        document.getElementById("resultaat").innerText = `🎶 Voor ${publiek} stel ik voor: ${genre}`;
+        document.getElementById("resultaat").innerHTML = `<div class="chat-bubble system">🎶 Voor ${publiek} stel ik voor: ${genre}</div>`;
       }
 
       function vraagPlatform() {
@@ -235,7 +172,7 @@
         let platform = "Spotify";
         if (stijl.includes("techno") || stijl.includes("house")) platform = "Beatport of SoundCloud";
         else if (stijl.includes("remix") || stijl.includes("underground")) platform = "SoundCloud";
-        document.getElementById("resultaat").innerText = `🔌 Voor ${stijl} raad ik aan: ${platform}`;
+        document.getElementById("resultaat").innerHTML = `<div class="chat-bubble system">🔌 Voor ${stijl} raad ik aan: ${platform}</div>`;
       }
 
       function zoekPlatformTracks() {
@@ -258,8 +195,10 @@
         }
 
         document.getElementById("resultaat").innerHTML = `
-          🎵 MixMind zoekt <strong>${genre}</strong> op ${platform}:<br>
-          <a href="${link}" target="_blank">${link}</a>
+          <div class="chat-bubble system">
+            🎵 MixMind zoekt <strong>${genre}</strong> op ${platform}:<br>
+            <a href="${link}" target="_blank">${link}</a>
+          </div>
         `;
       }
     </script>
