@@ -1,121 +1,130 @@
 <!DOCTYPE html>
 <html lang="nl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MixMind – AI voor DJ's</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
-      color: #fff;
-    }
-    header {
-      background-color: #00ffff;
-      color: #000;
-      padding: 20px;
-      text-align: center;
-      font-size: 32px;
-      font-weight: bold;
-    }
-    .container {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 20px;
-      background-color: #111;
-      border-radius: 12px;
-      box-shadow: 0 0 20px #00ffff33;
-    }
-    h2 {
-      color: #00ffff;
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-    p {
-      font-size: 18px;
-      line-height: 1.6;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: none;
-      margin-top: 10px;
-      margin-bottom: 20px;
-    }
-    button {
-      padding: 12px 24px;
-      background-color: #00ffff;
-      color: #000;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .result {
-      margin-top: 30px;
-      font-size: 18px;
-      color: #00ff99;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 14px;
-      color: #888;
-    }
-  </style>
-</head>
-<body>
-  <header>🎧 MixMind – AI voor DJ's</header>
-
-  <div class="container">
-    <h2>🔍 Slimme Muziekzoeker</h2>
-    <p>Typ een vibe, genre, doelgroep of platform. MixMind kiest automatisch het beste muziekplatform en geeft suggesties.</p>
-    <input type="text" id="zoekveld" placeholder="Bijv. 'techno voor jongeren in café'" />
-    <button onclick="slimmeZoek()">Zoek muziek</button>
-    <div class="result" id="resultaat"></div>
-  </div>
-
-  <footer>© 2025 MixMind – Gebouwd voor DJ's door flor</footer>
-
-  <script>
-    function slimmeZoek() {
-      const invoer = document.getElementById("zoekveld").value.toLowerCase();
-      const resultaat = document.getElementById("resultaat");
-
-      if (invoer.trim() === "") {
-        resultaat.innerText = "Typ eerst iets in!";
-        return;
+  <head>
+    <meta charset="UTF-8" />
+    <title>MixMind – AI voor DJ's</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: 'Orbitron', sans-serif;
+        background-color: #000;
+        color: #fff;
+        padding: 20px;
+        line-height: 1.6;
       }
+      input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: none;
+        margin-top: 10px;
+        margin-bottom: 20px;
+      }
+      button {
+        padding: 12px 24px;
+        background-color: #00ffff;
+        color: #000;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+      .result {
+        margin-top: 30px;
+        font-size: 18px;
+        color: #00ff99;
+      }
+      footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 14px;
+        color: #888;
+      }
+    </style>
+  </head>
 
-      let platform = "automatisch gekozen platform";
+  <body>
+    <header>🎧 MixMind – AI voor DJ's</header>
 
-      if (invoer.includes("spotify")) {
-        platform = "Spotify";
-      } else if (invoer.includes("soundcloud")) {
-        platform = "SoundCloud";
-      } else if (invoer.includes("youtube")) {
-        platform = "YouTube";
-      } else if (invoer.includes("beatport")) {
-        platform = "Beatport";
-      } else {
-        if (invoer.includes("underground") || invoer.includes("remix") || invoer.includes("dj-set")) {
-          platform = "SoundCloud";
-        } else if (invoer.includes("top") || invoer.includes("chart") || invoer.includes("populair")) {
+    <div class="container">
+      <h2>🧠 AI-opties</h2>
+      <button onclick="startAdvies()">🎛️ Start volledige AI-advies</button>
+      <button onclick="vraagAantalTracks()">⏱️ Hoeveel tracks heb ik nodig?</button>
+      <button onclick="vraagGenre()">🎶 Wat is een goed genre?</button>
+      <button onclick="vraagPlatform()">🔌 Welk platform past bij mijn stijl?</button>
+
+      <h2>🔍 Slimme Muziekzoeker</h2>
+      <p>Typ een vibe, genre, doelgroep of platform. MixMind kiest automatisch het beste muziekplatform en geeft suggesties.</p>
+      <input type="text" id="zoekveld" placeholder="Bijv. 'techno voor jongeren in café'" />
+      <button onclick="slimmeZoek()">Zoek muziek</button>
+
+      <div class="result" id="resultaat"></div>
+    </div>
+
+    <footer>© 2025 MixMind – Gebouwd voor DJ's door flor</footer>
+
+    <script>
+      function slimmeZoek() {
+        const invoer = document.getElementById("zoekveld").value.toLowerCase();
+        const resultaat = document.getElementById("resultaat");
+        if (invoer.trim() === "") {
+          resultaat.innerText = "Typ eerst iets in!";
+          return;
+        }
+
+        let platform = "automatisch gekozen platform";
+        if (invoer.includes("spotify")) {
           platform = "Spotify";
-        } else if (invoer.includes("techno") || invoer.includes("house") || invoer.includes("club")) {
+        } else if (invoer.includes("soundcloud")) {
+          platform = "SoundCloud";
+        } else if (invoer.includes("youtube")) {
+          platform = "YouTube";
+        } else if (invoer.includes("beatport")) {
           platform = "Beatport";
         } else {
-          platform = "Spotify";
+          if (invoer.includes("underground") || invoer.includes("remix") || invoer.includes("dj-set")) {
+            platform = "SoundCloud";
+          } else if (invoer.includes("top") || invoer.includes("chart") || invoer.includes("populair")) {
+            platform = "Spotify";
+          } else if (invoer.includes("techno") || invoer.includes("house") || invoer.includes("club")) {
+            platform = "Beatport";
+          } else {
+            platform = "Spotify";
+          }
         }
+
+        resultaat.innerText = `🎶 MixMind zoekt "${invoer}" op ${platform} ... (AI komt hier later)`;
       }
 
-      resultaat.innerText = `🎶 MixMind zoekt "${invoer}" op ${platform}... (AI komt hier later)`;
-    }
-  </script>
-</body>
-</html>
+      function startAdvies() {
+        const doelgroep = prompt("Voor wie draai je? (bv. jongeren 15–19 jaar)");
+        const duur = prompt("Hoe lang duurt je set? (in uren)");
+
+        if (!doelgroep || !duur || isNaN(duur)) {
+          alert("Geef een geldige doelgroep en tijdsduur op.");
+          return;
+        }
+
+        const tracksPerUur = doelgroep.includes("jongeren") ? 35 : 25;
+        const totaalTracks = Math.round(tracksPerUur * parseFloat(duur));
+        const genre = doelgroep.includes("jongeren") ? "EDM, hip-hop, pop punk" : "deep house, chill techno";
+        const platform = doelgroep.includes("jongeren") ? "Spotify of SoundCloud" : "Beatport of SoundCloud";
+
+        document.getElementById("resultaat").innerHTML = `
+          🎛️ MixMind Advies:<br>
+          Doelgroep: ${doelgroep}<br>
+          Duur: ${duur} uur<br>
+          🎶 Genre-advies: ${genre}<br>
+          🔌 Platform: ${platform}<br>
+          ⏱️ Tracks nodig: ± ${totaalTracks}
+        `;
+      }
+
+      function vraagAantalTracks() {
+        const uren = prompt("Hoe lang duurt je set? (in uren)");
+        if (!uren || isNaN(uren)) return alert("Geef een geldig getal op.");
+        const tracks = Math
